@@ -5,8 +5,7 @@ from generators import generate_name
 
 
 # ----------------------------------------------------------------
-p = []
-p.append(Person("Black", "White", "Creation", "God"))
+p = [Person("Black", "White", "Creation", "God")]
 p[0].deceased = True
 
 for i in range(0, 10):
@@ -18,14 +17,14 @@ for i in range(len(p)):
         alive.append(i)
 
 
-def randpers():
+def rand_pers():
     j = randrange(len(alive))
     return p[alive[j]]
 
 
 def procreate():
-    par1 = randpers()
-    par2 = randpers()
+    par1 = rand_pers()
+    par2 = rand_pers()
     occ = par1.occupation
     p.append(Person(par1, par2, occ, generate_name()))
     alive.append(len(p)-1)
@@ -60,7 +59,7 @@ while True:
         alive.pop(alive.index(justdied[i]))
 
 #    print(alive)
-    print("\n\nOOOcxcsOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+    print("\n\n----------------------------------------------------------------------------------------------------")
 
     if len(alive) == 0:
         sleep(0.5)
