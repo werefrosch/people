@@ -1,4 +1,5 @@
 class Location:
-    def __init__(self):
-        self.x = 0
+    def __init__(self, name, quality):
+        self.name = name
+        self.quality = quality
 

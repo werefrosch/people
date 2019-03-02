@@ -2,7 +2,7 @@ from random import randrange
 
 
 class Person:
-    def __init__(self, mother, father, place, name):
+    def __init__(self, mother, father, place, name, death_rate):
         self.mother = mother
         self.father = father
         self.age = 0
@@ -11,9 +11,9 @@ class Person:
         self.is_employed = False
         self.cash = 0
         self.occupation = place
+        self.death_rate = death_rate
 
     def die(self):
-        print(self.name, " DIED")
         self.deceased = True
 
     def grow(self):
@@ -27,5 +27,10 @@ class Person:
             self.cash += randrange(1, 2)
         if not self.deceased:
             self.age += 1
-        if randrange(0, 99) == 0:
+        if randrange(0, round(self.death_rate*self.occupation.quality)) <= 1:
             self.die()
+        if self.age >= 99:
+            self.die()
+
+
+

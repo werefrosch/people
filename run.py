@@ -1,15 +1,31 @@
-from random import randrange
+from random import randrange, random
 from time import sleep
 from Person import Person
 from generators import generate_name
+from Location import Location
+
+poc_miest = 10
+poc_ludi = 10
+birth_rate = 99
+death_rate = 99
+moving_rate = 50
+
+# PLACES ----------------------------------------------------------------
 
 
-# ----------------------------------------------------------------
-p = [Person("Black", "White", "Creation", "God")]
+plc = []
+for i in range(poc_miest):
+    plc.append(Location(generate_name(), random()))
+
+plc[1].name = "HELL"
+plc[1].quality = 0.01
+
+# PEOPLE ----------------------------------------------------------------
+p = [Person("Black", "White", "Creation", "God", 1)]
 p[0].deceased = True
 
-for i in range(0, 10):
-    p.append(Person(p[0], p[0], generate_name(), generate_name()))
+for i in range(0, poc_ludi):
+    p.append(Person(p[0], p[0], plc[randrange(len(plc))], generate_name(), death_rate))
 
 alive = []
 for i in range(len(p)):
@@ -26,19 +42,23 @@ def procreate():
     par1 = rand_pers()
     par2 = rand_pers()
     occ = par1.occupation
-    p.append(Person(par1, par2, occ, generate_name()))
+    p.append(Person(par1, par2, occ, generate_name(), death_rate))
     alive.append(len(p)-1)
 
 
+generation = 0
+
 while True:
     justdied = []
+    justmoved = []
+    generation += 1
     for i in range(len(alive)):
         asd = alive[i]
         print(p[asd].name, end="\t")
         print("Age: ", end="")
         print(p[asd].age, end="\t\t")
         print("Occupation: ", end="")
-        print(p[asd].occupation, end="\t\t")
+        print(p[asd].occupation.name, end="\t\t")
         print("Mom: ", end="")
         print(p[asd].mother.name, end="\t")
         print("Dad: ", end="")
@@ -46,20 +66,32 @@ while True:
         print("Cash: ", end="")
         print(p[asd].cash, end="\n")
         p[asd].grow()
-        if randrange(0, 99) == 0:
+        if randrange(moving_rate) == 0:
+            p[asd].occupation = plc[randrange(len(plc))]
+            justmoved.append(asd)
+        if randrange(birth_rate) == 0:
             procreate()
         if p[asd].deceased:
             justdied.append(asd)
-#    for i in range(len(p)):
-#        print(i, ": ", p[i].deceased, end=" ")
-    print("\n Zivych: ", len(alive))
-    print("\n Mrtvych: ", len(p) - len(alive))
 
+    # TESTY ----------------------------------------------------------------
+    if len(alive) << 2:
+        procreate()
     for i in range(len(justdied)):
         alive.pop(alive.index(justdied[i]))
 
-#    print(alive)
-    print("\n\n----------------------------------------------------------------------------------------------------")
+    # VYSTUP ----------------------------------------------------------------
+    print("\nJust died: ", end="")
+    for i in range(len(justdied)):
+        print(p[justdied[i]].name, end=", ")
+    print("\nJust moved: ", end="")
+    for i in range(len(justmoved)):
+        print(p[justmoved[i]].name, end=", ")
 
-    if len(alive) == 0:
-        sleep(0.5)
+    print("\n\nZivych: ", len(alive) - 1)
+    print("Mrtvych: ", len(p) - len(alive) - 1)
+    print("Rok: ", generation)
+
+    print("\n\n----------------------------------------------------------------------------------------------------")
+#    sleep(0.01)
+
